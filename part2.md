@@ -102,10 +102,11 @@ Apache Solr
 
 ElasticSearch
 
-    Analyzers: http://www.elasticsearch.org/guide/reference/index-modules/analysis/lang-analyzer.html
-    Stemming: http://www.elasticsearch.org/guide/reference/index-modules/analysis/stemmer-tokenfilter.html, http://www.elasticsearch.org/guide/reference/index-modules/analysis/snowball-tokenfilter.html and http://www.elasticsearch.org/guide/reference/index-modules/analysis/kstem-tokenfilter.html
+Analyzers: [http://www.elasticsearch.org/guide/reference/index-modules/analysis/lang-analyzer.html](http://www.elasticsearch.org/guide/reference/index-modules/analysis/lang-analyzer.html)
+Stemming: [http://www.elasticsearch.org/guide/reference/index-modules/analysis/stemmer-tokenfilter.html](http://www.elasticsearch.org/guide/reference/index-modules/analysis/stemmer-tokenfilter.html),
+ [http://www.elasticsearch.org/guide/reference/index-modules/analysis/snowball-tokenfilter.html](http://www.elasticsearch.org/guide/reference/index-modules/analysis/snowball-tokenfilter.html) それに [http://www.elasticsearch.org/guide/reference/index-modules/analysis/kstem-tokenfilter.html](http://www.elasticsearch.org/guide/reference/index-modules/analysis/snowball-tokenfilter.html)
 
-##Analysis Chain Definition
+##解析チェインの定義
 
 Of course, both Apache Solr and ElasticSearch allow you to define a custom analysis chain by specifying your own analyzer/tokenizer and list of filters that should be used to process your data. However, the difference between ElasticSearch and Solr is not only in the list of supported languages. ElasticSearch allows one to specify the analyzer per document and per query. So, if you need to use a different analyzer for each document in the index you can do that in ElasticSearch. The same applies to queries – each query can use a different analyzer.
 
