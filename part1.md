@@ -62,7 +62,7 @@ ElasticSearchは少し異なる。スキーマレスと呼べるものだ。あ�
 
 Let’s talk about the actual configuration of Solr and ElasticSearch for a bit. In Solr, the configuration of all components, search handlers, index specific things such as merge factor or buffers, caches, etc. are defined in the solrconfig.xml file. After each change you need to restart Solr node or reload it. All  configs in ElasticSearch are written to elasticsearch.yml file, which is just another configuration file. However, that’s not the only way to store and change ElasticSearch settings. Many settings exposed by ElasticSearch (not all though) can be changed on the live cluster – for example you can change how your shards and replicas are placed inside your cluster and ElasticSearch nodes don’t need to be restarted.  Learn more about this in ElasticSearch Shard Placement Control.
 
-SolrとElasticSearchの実際の設定についてもう少し話を続けよう。Solrでは全てのコンポーネント、検索ハンドラ、インデックス特定の物事（例えばマージ要因やバッファ、キャッシュ等）の定義は、solrconfig.xmlファイルの中に定義される。全ての変更の後にはSolrノードの再起動かリロードが必要である。ElasticSearchの設定全てはelasticsearch.ymlファイルに記述される。それはまた別の設定ファイルに過ぎない。しかしElasticSearchの設定を定義、又は変更する方法はそれだけではない。ElasticSearchにおける多くの設定（しかし全てでは無い）は運用中のクラスタ上にて変更可能だ。例えばShardとレプリカをクラスタ内部のどこに置くかである。またElasticSearchのノードは再起動する必要がない。このことについてはElasticSearchのShardの配置コントロールにおいてより詳しく学ぶ。
+SolrとElasticSearchの実際の設定についてもう少し話を続けよう。Solrでは全てのコンポーネント、検索ハンドラ、インデックス特定の物事（例えばマージファクタやバッファ、キャッシュ等）の定義は、solrconfig.xmlファイルの中に定義される。全ての変更の後にはSolrノードの再起動かリロードが必要である。ElasticSearchの設定全てはelasticsearch.ymlファイルに記述される。それはまた別の設定ファイルに過ぎない。しかしElasticSearchの設定を定義、又は変更する方法はそれだけではない。ElasticSearchにおける多くの設定（しかし全てでは無い）は運用中のクラスタ上にて変更可能だ。例えばShardとレプリカをクラスタ内部のどこに置くかである。またElasticSearchのノードは再起動する必要がない。このことについてはElasticSearchのShardの配置コントロールにおいてより詳しく学ぶ。
 
 ##探索とクラスタの管理
 
@@ -113,7 +113,7 @@ Solrの分散インデックス（と検索）に関する実装の詳細は我�
 
 Of course, both Solr and ElasticSearch allow one to configure replicas of indices (ElasticSearch) or collections (Solr). This is crucial because replicas enable creation of highly available clusters – even if some of nodes are down, for example because of hardware failure or maintenance, the cluster and data within it can remain available. Without replicas if one nodes is lost, you lose (access to) the data that were on the missing node. If you have replicas present in your configuration both search engines will automatically copy documents to replicas, so that you don’t need to worry about data loss.
 
-もちろん、SolrとElasticSearchの両方がインデックス（ElasticSearch)、またはコレクション（Solr）のレプリカの設定を許可している。これはレプリカがクラスタの高可用性を実現していることからとても重要だ。例えいくつかのノードがハードウェア障害やメンテナンスにてダウンしても、クラスタとその中のデータは利用可能であり続ける。レプリカ無しでは1つのノードが失なわれたら、失なわれたノード上に存在したデータ（に対するアクセス）は失なわれる。
+もちろん、SolrとElasticSearchの両方がインデックス（ElasticSearch)、またはコレクション（Solr）のレプリカの設定を許可している。これはレプリカがクラスタの高可用性を実現していることからとても重要だ。例えいくつかのノードがハードウェア障害やメンテナンスにてダウンしても、クラスタとその中のデータは利用可能であり続ける。レプリカ無しでは1つのノードが失なわれたら、失なわれたノード上に存在したデータ（に対するアクセス）は失なわれる。もし設定にレプリカが存在する場合、両検索エンジンは自動的にドキュメントをレプリカにコピーするので、データロスについて心配する必要はない。
 
 ##まとめ
 
