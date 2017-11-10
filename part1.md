@@ -1,4 +1,4 @@
-#Solr vs. ElasticSearch: Part 1 – 概観
+# Solr vs. ElasticSearch: Part 1 – 概観
 
 August 23, 2012 by [Rafał Kuć](http://blog.sematext.com/author/kucrafal/ "http://blog.sematext.com/author/kucrafal/")
 
@@ -20,19 +20,19 @@ Apache Lucene 4.0のリリースが近づくにつれ、それと共にSolr 4.0�
 5. Solr vs. ElasticSearch: Part 5 - 管理APIの機能
 6. Solr vs. ElasticSearch: Part 6 – ユーザと開発者のコミュニティ比較
 
-##はじめる前に
+## はじめる前に
 
 This post is based on released versions of Solr and ElasticSearch. For Solr, all the functionality description is based on version 4.0 beta and all of the ElasticSearch functionality is based on 0.19.8. Because we are comparing ElasticSearch and Solr, on the Solr side the focus is on Solr 4.0 (aka SolrCloud) functionality functionality and not Solr 3.*, so we could call this series as SolrCloud vs. ElasticSearch, too.
 
 このポストは以下のバージョンに基づいている。Solrの全ての機能記述はバージョン4.0βに基づき、ElasticSearchの全ての機能記述はバージョン0.19.8に基づく。ElasticSearchとSolrを比較するのだからSolrはSolrCloudとして知られるSolr 4.0にフォーカスする。Solr 3.*ではない。そのため我々はこの一連の記事をSolrCloud vs. ElasticSearchとも呼べるだろう。
 
-##検索エンジンの裏側
+## 検索エンジンの裏側
 
 For indexing and searching both Solr and ElasticSearch use Lucene. As you may suspect, Solr 4.0 beta uses the 4.0 version of Lucene, while ElasticSearch 0.19.8 still uses version 3.6.  Of course, that doesn’t mean much when it comes to future versions of ElasticSearch because you can be sure that ElasticSearch will start using Lucene 4.0 once it’s GA release is ready, or maybe even before that.
 
 インデックス作成と検索にはSolrとElasticSearchの両方がLuceneを用いる。お気づきだろうがSolr4.0βはLucene 4.0を用いるが、ElasticSearch 0.19.8は依然v3.6を用いている。もちろんそれはElasticSearchの将来のバージョンについては多くの意味を持たないだろう。Lucene 4.0のGAリリースの準備が終われば直ぐに（または恐らくそのずっと前から）ElasticSearchもまたそれを使い始めることが確実だからだ。
 
-##基本
+## 基本
 
 There are a few differences in the way Solr and ElasticSearch name certain concepts. Let’s start with the basics – many servers connected together forms a cluster for both ElasticSearch and Solr. A single instance of Solr or ElasticSearch is called a node. That’s about it for nomenclature overlap.
 
@@ -46,7 +46,7 @@ On the other hand we have ElasticSearch where the top logical data structure is 
 
 一方、ElasticSearchはインデックスと呼ばれる論理的なデータ構造の上にある。Solrのコレクションに似て、ElasticSearchのインデックスは複数のshardとレプリカを持つことが可能である。そしてShardとレプリカはまた小さなLuceneのインデックスであり、クラスタ上で分散され、分散環境を構築する。しかしそれだけではない。ElasticSearchでは1つのインデックス上に複数の型のドキュメントを持つことができる。これは異なるインデックス構造の複数のドキュメント（例えばユーザと彼らのドキュメント）を単一のインデックスに索引付けできることを意味する。ElasticSearchはインデックス作成時にもまた検索時にもそれらの型の区別を付けることが可能だ。Solrで同じことをするにはアプリケーションの中でそれをシミュレートするか、カスタム検索コンポーネントを開発する必要があるだろう。
 
-##設定
+## 設定
 
 Lets take a quick look at how Solr and ElasticSearch are configured. Let’s start with the index structure.
 
@@ -64,7 +64,7 @@ Let’s talk about the actual configuration of Solr and ElasticSearch for a bit.
 
 SolrとElasticSearchの実際の設定についてもう少し話を続けよう。Solrでは全てのコンポーネント、検索ハンドラ、インデックス特定の物事（例えばマージファクタやバッファ、キャッシュ等）の定義は、solrconfig.xmlファイルの中に定義される。全ての変更の後にはSolrノードの再起動かリロードが必要である。ElasticSearchの設定全てはelasticsearch.ymlファイルに記述される。それはまた別の設定ファイルに過ぎない。しかしElasticSearchの設定を定義、又は変更する方法はそれだけではない。ElasticSearchにおける多くの設定（しかし全てでは無い）は運用中のクラスタ上にて変更可能だ。例えばShardとレプリカをクラスタ内部のどこに置くかである。またElasticSearchのノードは再起動する必要がない。このことについてはElasticSearchのShardの配置コントロールにおいてより詳しく学ぶ。
 
-##探索とクラスタの管理
+## 探索とクラスタの管理
 
 Solr and ElasticSearch have a different approach to cluster node discovery and cluster management in general.  The main purpose of discovery is to monitor nodes’ states, choose master nodes, and in some cases also store shared configuration files.
 
@@ -82,7 +82,7 @@ There is one thing worth noting when it comes to cluster handling – the split 
 
 1つ注意すべきことがクラスタの取扱いにある。スプリットブレインという状態だ。クラスタが半分に分割されてノードの半分が、一方の半分を検知できない状態を想像して欲しい。例えばネットワークの障害だ。そのようなケースではElasticSearchはマスターノードを持たないほうの部分クラスタにおいて新しいマスターを選択しようと試みる。これが2つの独立したクラスタが同時に実行される状況へと導く。これは少ない量の定義で制限できるが、それでも起こりうる。一方でSolr4.0はスプリットブレイン状態に免疫がある。ZooKeeperを用いているため、そのような状態を防いでくれる。もし半分のSolrクラスタが接続不能に陥った場合、ZooKeeperにはそれが見えず、従ってデータとクエリはそちらには転送されない。
 
-##API
+## API
 
 If you know Apache Solr or ElasticSearch you know that they expose an HTTP API.
 
@@ -96,7 +96,7 @@ And what about ElasticSearch?  ElasticSearch exposes a REST API which can be acc
 
 ElasticSearchについてはどうだろうか？ ElasticSearchはHTTPのGET、DELETE、POST、PUTメソッドを用いてアクセスできるREST APIを公開している。ドキュメントにクエリをかけたり削除するだけでなく、インデックスを作成したり管理したり分析をコントロールして現在の状態を表すメトリクスを全て取得したりElasticSearchの設定を取得したりもできる。もしElasticSearchについて何か知りたいことがあればREST APIを通して取得可能だ。（我々はそれを自社の"Scalable Performance Monitoring for ElasticSearch"でも使っている！）もしあなたがSolrに慣れ親しんでいるのなら最初におかしく感じることが1つあるだろう。ElasticSearchのレスポンスにはJSONフォーマットしか存在しない。例えばXMLは無い。ElasticSearchとSolrの他の大きな違いはクエリだ。Solrでは全てのクエリパラメータがURLパラメータとして渡さえるのに対し、ElasticSearchのクエリではJSON表現にて構成される。JSONオブジェクトとしてクエリを構成することでElasticSearchがどのようにクエリを理解し、そしてどのような結果を返すかの数多くのコントロールを提供する。
 
-##データの取扱い
+## データの取扱い
 
 Of course, both Solr and ElasticSearch leverage Lucene near real-time capabilities.  This makes it possible for queries to match documents right after they’ve been indexed. In addition to that, both Solr (since 4.0) and ElasticSearch (since 0.15) allow versioning of documents in the index.  This feature allows them to support optimistic locking and thus enable prevention of overwriting updates. Let’s look at how distributed indexing is done in Solr vs. ElastiSearch.
 
@@ -115,7 +115,7 @@ Of course, both Solr and ElasticSearch allow one to configure replicas of indice
 
 もちろん、SolrとElasticSearchの両方がインデックス（ElasticSearch)、またはコレクション（Solr）のレプリカの設定を許可している。これはレプリカがクラスタの高可用性を実現していることからとても重要だ。例えいくつかのノードがハードウェア障害やメンテナンスにてダウンしても、クラスタとその中のデータは利用可能であり続ける。レプリカ無しでは1つのノードが失なわれたら、失なわれたノード上に存在したデータ（に対するアクセス）は失なわれる。もし設定にレプリカが存在する場合、両検索エンジンは自動的にドキュメントをレプリカにコピーするので、データロスについて心配する必要はない。
 
-##まとめ
+## まとめ
 
 
 We hope that after reading this post you have the basic understanding of what you can expect from both Solr 4.0 and ElasticSearch 0.19.* and you can start to get the feeling for differences and similarities between them.  Of course,  both Solr and ElasticSearch have very strong and active user and development communities and are constantly evolving and improving, and are doing that rather fast. In pre-Solr 4.0 (aka SolrCloud) world the difference between Solr and ElasticSearch was quite stark.  Since then, and under the pressure from ElasticSearch, the gap has narrowed and both projects are moving forward quite quickly.  At Sematext our clients often ask us to recommend the search engine for their use and we recommend both of them.  Which one we recommend for a particular project depends on project requirements, which we always go through at the beginning of every engagement.  If you need help deciding, let us know.
